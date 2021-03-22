@@ -9,7 +9,11 @@ import android.opengl.EGLExt;
 import android.opengl.EGLSurface;
 import android.view.Surface;
 
+import com.zq.opengl.opengl.filter.FilterChain;
+import com.zq.opengl.opengl.filter.FilterContext;
 import com.zq.opengl.opengl.filter.RecordFilter;
+
+import java.util.ArrayList;
 
 
 public class EGLEnv {
@@ -18,6 +22,7 @@ public class EGLEnv {
     private final EGLContext mEglContext;
     private final EGLSurface mEglSurface;
     private final RecordFilter recordFilter;
+    private final FilterChain filterChain;
     private EGLDisplay mEglDisplay;
 
     public EGLEnv(Context context, EGLContext mGlContext, Surface surface, int width, int height) {
@@ -89,11 +94,13 @@ public class EGLEnv {
         }
 
         recordFilter = new RecordFilter(context);
-        recordFilter.setSize(width, height);
+        FilterContext filterContext = new FilterContext();
+        filterContext.setSize(width, height);
+        filterChain = new FilterChain(new ArrayList<>(), 0, filterContext);
     }
 
     public void draw(int textureId, long timestamp) {
-        recordFilter.onDraw(textureId);
+        recordFilter.onDraw(textureId,filterChain);
         EGLExt.eglPresentationTimeANDROID(mEglDisplay, mEglSurface, timestamp);
         //EGLSurface是双缓冲模式
         EGL14.eglSwapBuffers(mEglDisplay, mEglSurface);

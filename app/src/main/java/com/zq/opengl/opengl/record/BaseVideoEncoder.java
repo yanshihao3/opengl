@@ -15,7 +15,6 @@ import android.view.Surface;
 
 
 import com.zq.opengl.opengl.filter.AbstractFilter;
-import com.zq.opengl.opengl.filter.RecordFilter;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -29,7 +28,6 @@ public abstract class BaseVideoEncoder {
 
     private Context mContext;
 
-    private AbstractFilter filter;
 
     private MediaMuxer mMediaMuxer;
 
@@ -48,11 +46,11 @@ public abstract class BaseVideoEncoder {
     private boolean audioExit;
     private boolean videoExit;
 
-    private final int sampleBit = 16;
+    public final int sampleBit = 16;
 
-    private final int channel = 2;
+    public final int channel = 2;
 
-    private final int sampleRate = 44100;
+    public final int sampleRate = 44100;
 
     private Handler mHandler;
 
@@ -73,11 +71,6 @@ public abstract class BaseVideoEncoder {
         this.width = width;
         this.height = height;
         this.mContext = context;
-    }
-
-
-    public void setFilter(AbstractFilter filter) {
-        this.filter = filter;
     }
 
 
